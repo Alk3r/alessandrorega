@@ -39,10 +39,10 @@ boolean noveai=false;
 boolean center=false;
 boolean stop=false;
 boolean vinto=true;
-boolean AI;
-boolean HM;
-byte punteggio;
-byte punteggioAI;
+boolean AI=false;
+boolean HM=false;
+byte punteggio=0;
+byte punteggioAI=0;
 char player1='X';
 char player2='O';
 int colore_x=0;
@@ -50,29 +50,13 @@ int colore_o=0;
 int colore_linea=#5D5D5D;
 boolean play=false;
 boolean pers=false;
-PImage logo_titolo;
-PImage menu;
-PFont font;
-PFont def;
-int i;
-void menu()
-{
-  logo_titolo=loadImage(dataPath("logo_titolo.png"));
-  menu=loadImage(dataPath("menu.png"));
-  //def=loadFont("LucidaSans-48.vlw");
-  background(255);
-  image(logo_titolo,75,70);
-  image(menu,44,150,402,400);
-  textSize(20);
-  //rect(95,198,105,95); //1
-  //rect(301,190,115,100); //3
-  //rect(65,405,130,100); //7
-  //textFont(font,20);
-  fill(0);
-  text("Created By Rega Alessandro",112,592);
-  noFill();
-  //textFont(def);
-}
+boolean vs_pc=false;
+byte par=0;
+boolean turno=false;
+byte scelta=1;
+boolean easter_egg=false;
+byte lettera;
+float c;
 void esc()
 {
   uno=false; 
@@ -98,7 +82,7 @@ void esc()
   vinto=true;
   AI=false;
   HM=false;
-  punteggio=0;
+  boolean punteggio=0;
   punteggioAI=0;
   play=false;
   par=0;
@@ -145,8 +129,8 @@ void gioco()
 void setup()
 {
   size(500,600);
-  menu();
-  //gioco();play=true;vinto=false;vs_pc=true; //abilita programma singolo
+  //menu();
+  gioco();play=true;vinto=false;vs_pc=true; //abilita programma singolo
   //personalizzazione();pers=true; //abilita programma personalizzazione
 }
 void draw()
