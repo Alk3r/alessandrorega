@@ -57,9 +57,9 @@ PFont def;
 int i;
 void menu()
 {
-  logo_titolo=loadImage("logo_titolo.png");
-  menu=loadImage("menu.png");
-  font=loadFont("SegoeScript-Bold-48.vlw");
+  logo_titolo=loadImage(dataPath("logo_titolo.png"));
+  menu=loadImage(dataPath("menu.png"));
+  font=loadFont(dataPath("SegoeScript-Bold-48.vlw"));
   //def=loadFont("LucidaSans-48.vlw");
   background(255);
   image(logo_titolo,75,70);
