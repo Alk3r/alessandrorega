@@ -50,6 +50,18 @@ int colore_o=0;
 int colore_linea=#5D5D5D;
 boolean play=false;
 boolean pers=false;
+boolean easter_egg=false;
+byte lettera;
+float c;
+byte scelta=1;
+boolean vs_pc;
+boolean turno;
+byte par=0;
+PImage logo_titolo;
+PImage menu;
+PFont font;
+PFont def;
+int i;
 void crea_quadrati()
 {
   fill(255);
@@ -91,7 +103,7 @@ void setup()
 {
   size(500,600);
   menu();
-  gioco();play=true;vinto=false;vs_pc=true; //abilita programma singolo
+  //gioco();play=true;vinto=false;vs_pc=true; //abilita programma singolo
   //personalizzazione();pers=true; //abilita programma personalizzazione
 }
 void draw()
@@ -383,9 +395,6 @@ void reset()
   AI=false;
   gioco();
 }
-boolean easter_egg=false;
-byte lettera;
-float c;
 void rainbow()
 {
   switch(lettera)
@@ -451,7 +460,6 @@ void rainbow()
     break;
   }
 }
-byte scelta=1;
 void personalizzazione()
 {
   background(255);
@@ -695,9 +703,6 @@ void controllo_selezione()
     fill(255);
   }
 }
-boolean vs_pc;
-boolean turno;
-byte par=0;
 void player_vs_player()
 {
   if(vs_pc==false && turno==false && vinto==false)
@@ -770,11 +775,6 @@ void P2_win()
   vinto=true;
   par=0;
 }
-PImage logo_titolo;
-PImage menu;
-PFont font;
-PFont def;
-int i;
 void menu()
 {
   logo_titolo=loadImage("logo_titolo.png");
