@@ -13,7 +13,819 @@
     <p>Processing Game</p>
     
     <script type="text/processing">
-    //codice
+    //---------------------------------------------//
+//                TIC TAC TOE V2.0             //
+//               by Rega Alessandro            //
+//              1563 Righe di codice           //       
+//---------------------------------------------//
+boolean uno=false; 
+boolean due=false;
+boolean tre=false;
+boolean quattro=false;
+boolean cinque=false;
+boolean sei=false;
+boolean sette=false;
+boolean otto=false;
+boolean nove=false;
+boolean unoai=false; 
+boolean dueai=false;
+boolean treai=false;
+boolean quattroai=false;
+boolean cinqueai=false;
+boolean seiai=false;
+boolean setteai=false;
+boolean ottoai=false;
+boolean noveai=false;
+boolean center=false;
+boolean stop=false;
+boolean vinto=true;
+boolean AI;
+boolean HM;
+byte punteggio;
+byte punteggioAI;
+char player1='X';
+char player2='O';
+int colore_x=0;
+int colore_o=0;
+int colore_linea=#5D5D5D;
+boolean play=false;
+boolean pers=false;
+void crea_quadrati()
+{
+  fill(255);
+  rect(35,55,120,135);//1
+  rect(175,55,150,135);//2
+  rect(345,55,120,135);//3
+  rect(35,210,120,130);//4
+  rect(175,210,150,130);//5
+  rect(345,210,120,130);//6
+  rect(35,360,120,135);//7
+  rect(175,360,150,135);//8
+  rect(345,360,120,135);//9
+  rect(12,10,50,20); //ESC
+  fill(0);
+}
+void gioco()
+{
+  background(255);
+  strokeCap(ROUND);
+  strokeWeight(1);
+  stroke(0,0,0); //black
+  line(30,200,470,200);
+  line(30,350,470,350);
+  line(165,50,165,500);
+  line(335,50,335,500);
+  fill(255);
+  rect(35,550,70,24,22);
+  textSize(20);
+  fill(255,0,0);
+  text("Nuovo",41,569);
+  fill(0);
+  text("< Esc",10,25);
+  stampa_punteggio();
+  //crea_quadrati();
+  textSize(100);
+  strokeWeight(10);
+}
+void setup()
+{
+  size(500,600);
+  menu();
+  //gioco();play=true;vinto=false;vs_pc=true; //abilita programma singolo
+  //personalizzazione();pers=true; //abilita programma personalizzazione
+}
+void draw()
+{
+  //Personalizzazione
+  if(pers==true)personalizzazione();
+  // Easter Egg ↓
+  if(play==false && pers==false)rainbow();
+  else if(lettera==7)rainbow();
+  //scritta "tocca a te"
+  if(vs_pc==false && play==true && pers==false)
+  {
+    strokeWeight(2);
+    fill(255);
+    rect(200,10,105,18,10);
+    strokeWeight(10);
+    fill(0);
+    textSize(15);
+    if(turno==false)text("Tocca ad "+player1,213,25);
+    else text("Tocca ad "+player2,213,25);
+    textSize(100);
+  }
+  //Pareggio ↓ 
+  if(uno==true && due==true && tre==true && quattro==true && cinque==true && sei==true && sette==true && otto==true && nove==true && HM==false && AI==false && easter_egg==false){pareggio();stop=false;}
+  // Vincità PERSONA ↓
+  if(vs_pc==true && pers==false)
+  {
+    if(uno==true && due==true && tre==true && unoai==false && dueai==false && treai==false){fine();stop=false;linea(123);} //123
+    if(quattro==true && cinque==true && sei==true && quattroai==false && cinqueai==false && seiai==false){fine();stop=false;linea(456);} //456
+    if(sette==true && otto==true && nove==true && setteai==false && ottoai==false && noveai==false){fine();stop=false;linea(789);} //789
+    if(uno==true && quattro==true && sette==true && unoai==false && quattroai==false && setteai==false){fine();stop=false;linea(147);} //147
+    if(due==true && cinque==true && otto==true && dueai==false && cinqueai==false && ottoai==false){fine();stop=false;linea(258);} //258
+    if(tre==true && sei==true && nove==true && treai==false && seiai==false && noveai==false){fine();stop=false;linea(369);} //369
+    if(uno==true && cinque==true && nove==true && unoai==false && cinqueai==false && noveai==false){fine();stop=false;linea(159);} //159
+    if(tre==true && cinque==true && sette==true && treai==false && cinqueai==false && setteai==false){fine();stop=false;linea(357);} //357
+    // Vincità AI ↓
+    if(unoai==true && dueai==true && treai==true){fineAI();stop=false;linea(123);} //123
+    if(quattroai==true && cinqueai==true && seiai==true){fineAI();stop=false;linea(456);} //456
+    if(setteai==true && ottoai==true && noveai==true){fineAI();stop=false;linea(789);} //789
+    if(unoai==true && quattroai==true && setteai==true){fineAI();stop=false;linea(147);} //147
+    if(dueai==true && cinqueai==true && ottoai==true){fineAI();stop=false;linea(258);} //258
+    if(treai==true && seiai==true && noveai==true){fineAI();stop=false;linea(369);} //369
+    if(unoai==true && cinqueai==true && noveai==true){fineAI();stop=false;linea(159);} //159
+    if(treai==true && cinqueai==true && setteai==true){fineAI();stop=false;linea(357);} //357
+  }
+  // Programma normale
+  if(stop==true && vs_pc==true && pers==false)
+  {
+    delay(200);
+    fill(colore_o);
+    // Condizioni ↓
+    if(unoai==true && setteai==true && quattro==false){text(player2,70,310);quattro=true;quattroai=true;stop=false;} //4
+    else if(dueai==true && ottoai==true && cinque==false){text(player2,222,310);cinque=true;cinqueai=true;stop=false;} //5
+    else if(treai==true && noveai==true && sei==false){text(player2,374,310);sei=true;seiai=true;stop=false;} //6
+    else if(unoai==true && treai==true && due==false){text(player2,222,155);due=true;dueai=true;stop=false;} //2
+    else if(quattroai==true && seiai==true && cinque==false){text(player2,222,310);cinque=true;cinqueai=true;stop=false;} //5
+    else if(setteai==true && noveai==true && otto==false){text(player2,222,460);otto=true;ottoai=true;stop=false;} //8
+    else if(unoai==true && noveai==true && cinque==false){text(player2,222,310);cinque=true;cinqueai=true;stop=false;} //5
+    else if(treai==true && setteai==true && cinque==false){text(player2,222,310);cinque=true;cinqueai=true;stop=false;} //5
+    else if(unoai==true && cinqueai==true && nove==false){text(player2,374,460);nove=true;noveai=true;stop=false;} //9
+    else if(treai==true && cinqueai==true && sette==false){text(player2,70,460);sette=true;setteai=true;stop=false;} //7
+    else if(unoai==true && quattroai==true && sette==false){text(player2,70,460);sette=true;setteai=true;stop=false;} //7
+    else if(dueai==true && cinqueai==true && otto==false){text(player2,222,460);otto=true;ottoai=true;stop=false;} //8
+    else if(treai==true && seiai==true && nove==false){text(player2,374,460);nove=true;noveai=true;stop=false;} //9
+    else if(unoai==true && dueai==true && tre==false){text(player2,374,155);tre=true;treai=true;stop=false;} //3
+    else if(quattroai==true && cinqueai==true && sei==false){text(player2,374,310);sei=true;seiai=true;stop=false;} //6
+    else if(setteai==true && ottoai==true && nove==false){text(player2,347,460);nove=true;noveai=true;stop=false;} //9
+    else if(dueai==true && treai==true && uno==false){text(player2,70,155);uno=true;unoai=true;stop=false;} //1
+    else if(seiai==true && cinqueai==true && quattro==false){text(player2,70,310);quattro=true;quattroai=true;stop=false;} //4
+    else if(noveai==true && ottoai==true && sette==false){text(player2,70,460);sette=true;setteai=true;stop=false;} //7
+    else if(setteai==true && quattroai==true && uno==false){text(player2,70,155);uno=true;unoai=true;stop=false;} //1
+    else if(ottoai==true && cinqueai==true && due==false){text(player2,222,155);due=true;dueai=true;stop=false;} //2
+    else if(noveai==true && seiai==true && tre==false){text(player2,374,155);tre=true;treai=true;stop=false;} //3
+    else if(setteai==true && cinqueai==true && tre==false){text(player2,374,155);tre=true;treai=true;stop=false;} //3
+    else if(noveai==true && cinqueai==true && uno==false){text(player2,70,155);uno=true;unoai=true;stop=false;} //1
+    //----------------------------------------------------------------------------------------------------------------------------------------------------------//
+    else if(uno==true && due==true && tre==false && unoai==false && dueai==false){text(player2,374,155);tre=true;treai=true;stop=false;} //3
+    else if(quattro==true && cinque==true && sei==false && quattroai==false && cinqueai==false){text(player2,374,310);sei=true;seiai=true;stop=false;} //6
+    else if(sette==true && otto==true && nove==false && setteai==false && ottoai==false){text(player2,374,460);nove=true;noveai=true;stop=false;} //9
+    else if(uno==true && quattro==true && sette==false && unoai==false && quattroai==false){text(player2,70,460);sette=true;setteai=true;stop=false;} //7
+    else if(due==true && cinque==true && otto==false && dueai==false && cinqueai==false){text(player2,222,460);otto=true;ottoai=true;stop=false;} //8
+    else if(tre==true && sei==true && nove==false && treai==false && seiai==false){text(player2,374,460);nove=true;noveai=true;stop=false;} //9
+    else if(due==true && tre==true && uno==false && dueai==false && treai==false){text(player2,70,155);uno=true;unoai=true;stop=false;} //1
+    else if(cinque==true && sei==true && quattro==false && cinqueai==false && seiai==false){text(player2,70,310);quattro=true;quattroai=true;stop=false;} //4
+    else if(otto==true && nove==true && sette==false && ottoai==false && noveai==false){text(player2,70,460);sette=true;setteai=true;stop=false;} //7
+    else if(sei==true && nove==true && tre==false && seiai==false && noveai==false){text(player2,374,155);tre=true;treai=true;stop=false;} //3
+    else if(cinque==true && otto==true && due==false && cinqueai==false && ottoai==false){text(player2,222,155);due=true;dueai=true;stop=false;} //2
+    else if(quattro==true && sette==true && uno==false && quattroai==false && setteai==false){text(player2,70,155);uno=true;unoai=true;stop=false;} //1
+    else if(tre==true && cinque==true && sette==false && treai==false && cinqueai==false){text(player2,70,460);sette=true;setteai=true;stop=false;} //7
+    else if(uno==true && cinque==true && nove==false && unoai==false && cinqueai==false){text(player2,374,460);nove=true;noveai=true;stop=false;} //9
+    else if(cinque==true && sette==true && tre==false && cinqueai==false && setteai==false){text(player2,374,155);tre=true;treai=true;stop=false;} //3
+    else if(cinque==true && nove==true && uno==false && cinqueai==false && noveai==false){text(player2,70,155);uno=true;unoai=true;stop=false;} //1
+    else if(uno==true && tre==true && due==false && unoai==false && treai==false){text(player2,222,155);due=true;dueai=true;stop=false;} //2
+    else if(quattro==true && sei==true && cinque==false && quattroai==false && seiai==false){text(player2,222,310);cinque=true;cinqueai=true;stop=false;} //5
+    else if(sette==true && nove==true && otto==false && setteai==false && noveai==false){text(player2,222,460);otto=true;ottoai=true;stop=false;} //8
+    else if(uno==true && sette==true && quattro==false && unoai==false && setteai==false){text(player2,70,310);quattro=true;quattroai=true;stop=false;} //4
+    else if(due==true && otto==true && cinque==false && dueai==false && ottoai==false){text(player2,222,310);cinque=true;cinqueai=true;stop=false;} //5
+    else if(tre==true && nove==true && sei==false && treai==false && noveai==false){text(player2,374,310);sei=true;seiai=true;stop=false;} //6
+    else if(tre==true && sette==true && cinque==false && treai==false && setteai==false){text(player2,222,310);cinque=true;cinqueai=true;stop=false;} //5
+    else if(uno==true && nove==true && cinque==false && unoai==false && noveai==false){text(player2,222,310);cinque=true;cinqueai=true;stop=false;} //5
+    else if(treai==true && setteai==true && uno==false && unoai==false && due==false && quattro==false){text(player2,70,155);uno=true;unoai=true;stop=false;} //1
+    else if(treai==true && setteai==true && nove==false && noveai==false && sei==false && otto==false){text(player2,374,460);nove=true;noveai=true;stop=false;} //9
+    else if(unoai==true && noveai==true && sette==false && setteai==false && quattro==false && otto==false){text(player2,70,460);sette=true;setteai=true;stop=false;} //7
+    else if(unoai==true && noveai==true && tre==false && treai==false && due==false && sei==false){text(player2,374,155);tre=true;treai=true;stop=false;} //3
+    else if(dueai==true && quattroai==true && uno==false && unoai==false && tre==false && sette==false){text(player2,70,155);uno=true;unoai=true;stop=false;} //1
+    else if(dueai==true && seiai==true && tre==false && treai==false && uno==false && nove==false){text(player2,374,155);tre=true;treai=true;stop=false;} //3
+    else if(quattroai==true && ottoai==true && sette==false && setteai==false && uno==false && nove==false){text(player2,222,460);otto=true;ottoai=true;stop=false;} //8
+    else if(seiai==true && ottoai==true && nove==false && noveai==false && tre==false && sette==false){text(player2,374,460);nove=true;noveai=true;stop=false;} //9
+    else if(cinqueai==true && uno==false && due==false && tre==false && sette==false && nove==false){text(player2,70,155);uno=true;unoai=true;stop=false;} //1
+    else if(cinqueai==true && due==false && sei==false && nove==false && uno==false && sette==false){text(player2,222,155);due=true;dueai=true;stop=false;} //2
+    else if(cinqueai==true && sette==false && otto==false && nove==false && uno==false && tre==false){text(player2,70,460);sette=true;setteai=true;stop=false;} //7
+    else if(cinqueai==true && uno==false && quattro==false && sette==false && tre==false && nove==false){text(player2,70,155);uno=true;unoai=true;stop=false;}  //1
+    else if(cinque==true && cinqueai==false && uno==true && tre==false){text(player2,374,155);tre=true;treai=true;stop=false;} //3
+    else if(cinque==true && cinqueai==false && uno==true && sette==false){text(player2,70,460);sette=true;setteai=true;stop=false;} //7
+    else if(cinque==true && cinqueai==false && sette==true && nove==false){text(player2,374,460);nove=true;noveai=true;stop=false;} //9
+    else if(cinque==true && cinqueai==false && nove==true && tre==false){text(player2,374,155);tre=true;treai=true;stop=false;} //3
+    else if(cinque==true && cinqueai==false && tre==true && uno==false){text(player2,70,155);uno=true;unoai=true;stop=false;} //1
+    else if(cinque==true && cinqueai==false && sette==true && uno==false){text(player2,70,155);uno=true;unoai=true;stop=false;} //1
+    else if(cinque==true && cinqueai==false && tre==true && nove==false){text(player2,374,460);nove=true;noveai=true;stop=false;} //9
+    else if(due==true && dueai==false && quattro==true && quattroai==false && uno==false && unoai==false && tre==false && sette==false){text(player2,70,155);uno=true;unoai=true;stop=false;} //1
+    else if(due==true && dueai==false && sei==true && seiai==false && tre==false && treai==false && uno==false && nove==false){text(player2,374,155);tre=true;treai=true;stop=false;} //3
+    else if(quattro==true && quattroai==false && otto==true && ottoai==false && sette==false && setteai==false && uno==false && nove==false){text(player2,70,460);sette=true;setteai=true;stop=false;} //7
+    else if(sei==true && seiai==false && otto==true && ottoai==false && nove==false && noveai==false && tre==false && sette==false){text(player2,374,460);nove=true;noveai=true;stop=false;} //9
+    else 
+    {
+      if((uno==true || tre==true || sette==true || nove==true) && cinque==false && cinqueai==false){text(player2,222,310);cinque=true;cinqueai=true;stop=false;} //5
+      else if(uno==true && nove==true && cinqueai==true && due==false && dueai==false){text(player2,222,155);due=true;dueai=true;stop=false;} //2
+      else if(tre==true && sette==true && cinqueai==true && otto==false && ottoai==false){text(player2,222,460);otto=true;ottoai=true;stop=false;} //8
+      else if(cinque==true && cinqueai==false && (uno==false || tre==false || sette==false || nove==false) && due==false && quattro==false && sei==false && otto==false)
+      {
+        int r=int(random(1,5));
+        if(r==1){text(player2,70,155);uno=true;unoai=true;stop=false;} //1
+        else if(r==2){text(player2,374,155);tre=true;treai=true;stop=false;} //3
+        else if(r==3){text(player2,70,460);sette=true;setteai=true;stop=false;} //7
+        else if(r==4){text(player2,374,460);nove=true;noveai=true;stop=false;} //9
+      } 
+      else if((uno==false || unoai==false) && due==true && tre==true && quattro==true && cinque==true && sei==true && sette==true && otto==true && nove==true){text(player2,70,155);uno=true;unoai=true;stop=false;} //1
+      else if(uno==true && (due==false || dueai==false) && tre==true && quattro==true && cinque==true && sei==true && sette==true && otto==true && nove==true){text(player2,222,155);due=true;dueai=true;stop=false;} //2
+      else if(uno==true && due==true && (tre==false || treai==false) && quattro==true && cinque==true && sei==true && sette==true && otto==true && nove==true){text(player2,374,155);tre=true;treai=true;stop=false;} //3
+      else if(uno==true && due==true && tre==true && (quattro==false || quattroai==false) && cinque==true && sei==true && sette==true && otto==true && nove==true){text(player2,70,310);quattro=true;quattroai=true;stop=false;} //4
+      else if(uno==true && due==true && tre==true && quattro==true && (cinque==false || cinqueai==false) && sei==true && sette==true && otto==true && nove==true){text(player2,222,310);cinque=true;cinqueai=true;stop=false;} //5
+      else if(uno==true && due==true && tre==true && quattro==true && cinque==true && (sei==false || seiai==false) && sette==true && otto==true && nove==true){text(player2,374,310);sei=true;seiai=true;stop=false;} //6
+      else if(uno==true && due==true && tre==true && quattro==true && cinque==true && sei==true && (sette==false || setteai==false)  && otto==true && nove==true){text(player2,70,460);sette=true;setteai=true;stop=false;} //7
+      else if(uno==true && due==true && tre==true && quattro==true && cinque==true && sei==true && sette==true && (otto==false || ottoai==false) && nove==true){text(player2,222,460);otto=true;ottoai=true;stop=false;} //8
+      else if(uno==true && due==true && tre==true && quattro==true && cinque==true && sei==true && sette==true && otto==true && (nove==false || noveai==false)){text(player2,374,460);nove=true;noveai=true;stop=false;} //9
+      else
+      {
+        int r=int(random(1,10));
+        if(r==1 && uno==false && unoai==false){text(player2,70,155);uno=true;unoai=true;stop=false;} //1
+        if(r==2 && due==false && dueai==false){text(player2,222,155);due=true;dueai=true;stop=false;} //2
+        if(r==3 && tre==false && treai==false){text(player2,374,155);tre=true;treai=true;stop=false;} //3
+        if(r==4 && quattro==false && quattroai==false){text(player2,70,310);quattro=true;quattroai=true;stop=false;} //4
+        if(r==5 && cinque==false && cinqueai==false){text(player2,222,310);cinque=true;cinqueai=true;stop=false;} //5
+        if(r==6 && sei==false && seiai==false){text(player2,374,310);sei=true;seiai=true;stop=false;} //6
+        if(r==7 && sette==false && setteai==false){text(player2,70,460);sette=true;setteai=true;stop=false;} //7
+        if(r==8 && otto==false && ottoai==false){text(player2,222,460);otto=true;ottoai=true;stop=false;} //8
+        if(r==9 && nove==false && noveai==false){text(player2,374,460);nove=true;noveai=true;stop=false;} //9
+      }
+    }
+  }
+  noFill();
+}
+void mousePressed()
+{
+  if(vs_pc==false && pers==false)player_vs_player();
+  if(mouseX>12 && mouseX<62 && mouseY>10 && mouseY<30){esc();}
+  if(stop==false && vinto==false && vs_pc==true && pers==false)
+  {
+    fill(colore_x);
+    if(mouseX>35 && mouseX<155 && mouseY>55 && mouseY<190 && uno==false){text(player1,70,155);uno=true;stop=true;}            //1
+    if(mouseX>175 && mouseX<325 && mouseY>55 && mouseY<190 && due==false){text(player1,222,155);due=true;stop=true;}          //2
+    if(mouseX>345 && mouseX<465 && mouseY>55 && mouseY<190 && tre==false){text(player1,374,155);tre=true;stop=true;}          //3
+    if(mouseX>35 && mouseX<155 && mouseY>210 && mouseY<340 && quattro==false){text(player1,70,310);quattro=true;stop=true;}   //4
+    if(mouseX>175 && mouseX<325 && mouseY>210 && mouseY<340 && cinque==false){text(player1,222,310);cinque=true;stop=true;}   //5
+    if(mouseX>345 && mouseX<465 && mouseY>210 && mouseY<340 && sei==false){text(player1,374,310);sei=true;stop=true;}         //6
+    if(mouseX>35 && mouseX<155 && mouseY>360 && mouseY<495 && sette==false){text(player1,70,460);sette=true;stop=true;}       //7
+    if(mouseX>175 && mouseX<325 && mouseY>360 && mouseY<495 && otto==false){text(player1,222,460);otto=true;stop=true;}       //8
+    if(mouseX>345 && mouseX<455 && mouseY>360 && mouseY<495 && nove==false){text(player1,374,460);nove=true;stop=true;}       //9
+    noFill();
+  }
+  if(vinto==true && pers==false)if(mouseX>35 && mouseX<105 && mouseY>550 && mouseY<574)reset();
+  if(play==false && pers==false)
+  {
+    if(mouseX>95 && mouseX<200 && mouseY>198 && mouseY<293){gioco();play=true;vinto=false;vs_pc=true;}
+    if(mouseX>301 && mouseX<416 && mouseY>190 && mouseY<290){gioco();play=true;vinto=false;vs_pc=false;}
+    if(mouseX>65 && mouseX<195 && mouseY>405 && mouseY<505){personalizzazione();pers=true;}
+  }
+}
+void linea(int N)
+{
+  stroke(colore_linea);
+  if(N==123)line(40,117,460,117);
+  else if(N==456)line(40,272,460,272);
+  else if(N==789)line(40,422,460,422);
+  else if(N==147)line(100,65,100,485);
+  else if(N==258)line(252,65,252,485);
+  else if(N==369)line(403,65,403,485);
+  else if(N==159)line(55,75,450,470);
+  else if(N==357)line(445,75,55,475);
+  stroke(0);
+}
+void fine()
+{
+  HM=true;
+  textSize(30);
+  fill(0,255,0);
+  text("HAI VINTO",300,570);
+  noFill();
+  stop=false;
+  vinto=true;
+}
+void fineAI()
+{
+  AI=true;
+  textSize(30);
+  fill(255,0,0);
+  text("HAI PERSO",300,570);
+  noFill();
+  vinto=true;
+}
+void pareggio()
+{
+  textSize(30);
+  fill(0);
+  text("PAREGGIO",300,570);
+  noFill();
+  vinto=true;
+}
+void stampa_punteggio()
+{
+  textSize(25);
+  fill(0,255,0);
+  text(punteggio,147,570);
+  fill(0);
+  text(":",175,570);
+  fill(255,0,0);
+  text(punteggioAI,195,570);
+  fill(0);
+}
+void reset()
+{
+  if(HM==true)
+  {
+    punteggio+=1;
+    stop=true;
+    if(vs_pc==false)turno=true;
+  }
+  else if(AI==true)
+  {
+    punteggioAI+=1;
+    stop=false;
+    if(vs_pc==false)turno=false;
+  }
+  else 
+  {
+    int r=int(random(1,3));
+    if(vs_pc==true)
+    {
+      if(r==1)stop=false;
+      else stop=true;
+    }
+    else
+    {
+      if(r==1)turno=false;
+      else turno=true;
+    }
+  }
+  uno=false; 
+  due=false;
+  tre=false;
+  quattro=false;
+  cinque=false;
+  sei=false;
+  sette=false;
+  otto=false;
+  nove=false;
+  unoai=false; 
+  dueai=false;
+  treai=false;
+  quattroai=false;
+  cinqueai=false;
+  seiai=false;
+  setteai=false;
+  ottoai=false;
+  noveai=false;
+  center=false;
+  vinto=false;
+  HM=false;
+  AI=false;
+  gioco();
+}
+boolean easter_egg=false;
+byte lettera;
+float c;
+void rainbow()
+{
+  switch(lettera)
+  {
+    case 0:
+    if(keyPressed && key=='7')lettera++;
+    break;
+    case 1:
+    if(keyPressed && key=='m')lettera++;
+    colorMode(HSB);
+    break;
+    case 2:
+    if(keyPressed && key=='a')lettera++;
+    break;
+    case 3:
+    if(keyPressed && key=='g')lettera++;
+    break;
+    case 4:
+    if(keyPressed && key=='g')lettera++;
+    break;
+    case 5:
+    if(keyPressed && key=='i')lettera++;
+    break;
+    case 6:
+    if(keyPressed && key=='o')lettera++;
+    break;
+    case 7:
+    if(play==true)
+    {
+      easter_egg=true;
+      vinto=true;
+      vs_pc=false;
+      uno=true; 
+      due=true;
+      tre=true;
+      quattro=true;
+      cinque=true;
+      sei=true;
+      sette=true;
+      otto=true;
+      nove=true;
+      unoai=true; 
+      dueai=true;
+      treai=true;
+      quattroai=true;
+      cinqueai=true;
+      seiai=true;
+      setteai=true;
+      ottoai=true;
+      noveai=true;
+      if(mouseX>35 && mouseX<155 && mouseY>55 && mouseY<190){text('G',70,155);}    //1
+      if(mouseX>175 && mouseX<325 && mouseY>55 && mouseY<190){text('A',222,155);}  //2
+      if(mouseX>345 && mouseX<465 && mouseY>55 && mouseY<190){text('B',374,155);}  //3
+      if(mouseX>35 && mouseX<155 && mouseY>210 && mouseY<340){text('R',70,310);}   //4
+      if(mouseX>175 && mouseX<325 && mouseY>210 && mouseY<340){text('I',222,310);} //5
+      if(mouseX>345 && mouseX<465 && mouseY>210 && mouseY<340){text('E',374,310);} //6
+      if(mouseX>35 && mouseX<155 && mouseY>360 && mouseY<495){text('L',70,460);}   //7
+      if(mouseX>175 && mouseX<325 && mouseY>360 && mouseY<495){text('A',222,460);} //8
+      if(mouseX>345 && mouseX<455 && mouseY>360 && mouseY<495){text('♥',374,460);} //9
+      if (c >= 255)  c=0;  else  c++;
+      fill(c, 255, 255);
+    }
+    break;
+  }
+}
+byte scelta=1;
+void personalizzazione()
+{
+  background(255);
+  fill(0);
+  strokeWeight(1);
+  stroke(0);
+  text("< Esc",10,25);
+  line(7,240,493,240); //centrale
+  //line(250,0,250,600);
+  //line(167,0,167,600);
+  //line(335,0,335,600);
+  //line(0,150,500,150);
+  //line(0,440,500,440);
+  fill(255);
+  //rettangolo esterno ↓
+  rect(7,30,486,560,40);
+  // player ↓
+  rect(72,200,20,20,2); //X
+  rect(242,200,20,20,2); //♥
+  rect(410,200,20,20,2); //☺
+  fill(255);
+  rect(170,40,163,25,3,12,3,12); //rettangolo scritta 1
+  rect(170,260,163,25,3,12,3,12); //rettangolo scritta 2
+  fill(0);
+  textSize(20);
+  text("Chi vuoi essere?",173,60);
+  text("Che colore vuoi?",172,280);
+  textSize(50);
+  text("X/O",40,150);
+  text("♥/♠",200,150);
+  text("☺/☻",365,150);
+  // Colori ↓
+  //Rosso
+  fill(255);
+  rect(40,385,20,20,2);
+  rect(105,385,20,20,2);
+  textSize(14);
+  fill(0);
+  text("Player 1",24,420);
+  text("Player 2",92,420);
+  textSize(20);
+  text("Rosso",55,315);
+  fill(#FF0000);
+  rect(63,325,40,40,10);
+  //Blu ↓
+  fill(255);
+  rect(210,385,20,20,2);
+  rect(275,385,20,20,2);
+  textSize(14);
+  fill(0);
+  text("Player 1",195,420);
+  text("Player 2",262,420);
+  textSize(20);
+  text("Blu",238,315);
+  fill(#0023FA);
+  rect(233,325,40,40,10);
+  //Verde ↓
+  fill(255);
+  rect(375,385,20,20,2);
+  rect(440,385,20,20,2);
+  textSize(14);
+  fill(0);
+  text("Player 1",359,420);
+  text("Player 2",426,420);
+  textSize(20);
+  text("Verde",390,315);
+  fill(#14FF00);
+  rect(398,325,40,40,10);
+  //Riga vincita ↓
+  //Ciano
+  fill(0);
+  textSize(20);
+  text("Ciano",57,475);
+  textSize(40);
+  text("X X X",33,530);
+  fill(255);
+  rect(72,550,20,20,2);
+  stroke(#03E8FF);
+  strokeWeight(5);
+  line(30,515,133,515);
+  stroke(0);
+  strokeWeight(1);
+  //Giallo
+  fill(0);
+  textSize(20);
+  text("Giallo",227,475);
+  textSize(40);
+  text("X X X",203,530);
+  fill(255);
+  rect(242,550,20,20,2);
+  stroke(#FEFF00);
+  strokeWeight(5);
+  line(200,515,303,515);
+  stroke(0);
+  strokeWeight(1);
+  //Magenta
+  fill(0);
+  textSize(20);
+  text("Magenta",379,475);
+  textSize(40);
+  text("X X X",371,530);
+  fill(255);
+  rect(410,550,20,20,2);
+  stroke(#FF00FB);
+  strokeWeight(5);
+  line(368,515,471,515);
+  stroke(0);
+  strokeWeight(1);
+  controllo_selezione();
+}
+
+void controllo_selezione()
+{
+  if(mousePressed==true)
+  {
+    if(mouseX>72 && mouseX<92 && mouseY>200 && mouseY<220)scelta=1;
+    if(mouseX>242 && mouseX<262 && mouseY>200 && mouseY<220)scelta=2;
+    if(mouseX>410 && mouseX<430 && mouseY>200 && mouseY<220)scelta=3;
+    if(mouseX>40 && mouseX<60 && mouseY>385 && mouseY<405)colore_x=#FF0000;
+    if(mouseX>40 && mouseX<60 && mouseY>385 && mouseY<405 && colore_x==#FF0000 && mouseButton==RIGHT)colore_x=0;
+    if(mouseX>105 && mouseX<125 && mouseY>385 && mouseY<405)colore_o=#FF0000;
+    if(mouseX>105 && mouseX<125 && mouseY>385 && mouseY<405 && colore_o==#FF0000 && mouseButton==RIGHT)colore_o=0;
+    if(mouseX>210 && mouseX<230 && mouseY>385 && mouseY<405)colore_x=#0023FA;
+    if(mouseX>210 && mouseX<230 && mouseY>385 && mouseY<405 && colore_x==#0023FA && mouseButton==RIGHT)colore_x=0;
+    if(mouseX>275 && mouseX<295 && mouseY>385 && mouseY<405)colore_o=#0023FA;
+    if(mouseX>275 && mouseX<295 && mouseY>385 && mouseY<405 && colore_o==#0023FA && mouseButton==RIGHT)colore_o=0;
+    if(mouseX>375 && mouseX<395 && mouseY>385 && mouseY<405)colore_x=#14FF00;
+    if(mouseX>375 && mouseX<395 && mouseY>385 && mouseY<405 && colore_x==#14FF00 && mouseButton==RIGHT)colore_x=0;
+    if(mouseX>440 && mouseX<460 && mouseY>385 && mouseY<405)colore_o=#14FF00;
+    if(mouseX>440 && mouseX<460 && mouseY>385 && mouseY<405 && colore_o==#14FF00 && mouseButton==RIGHT)colore_o=0;
+    if(mouseX>72 && mouseX<92 && mouseY>550 && mouseY<570)colore_linea=#03E8FF;
+    if(mouseX>72 && mouseX<92 && mouseY>550 && mouseY<570 && colore_linea==#03E8FF && mouseButton==RIGHT)colore_linea=#5D5D5D;
+    if(mouseX>242 && mouseX<262 && mouseY>550 && mouseY<570)colore_linea=#FEFF00;
+    if(mouseX>242 && mouseX<262 && mouseY>550 && mouseY<570 && colore_linea==#FEFF00 && mouseButton==RIGHT)colore_linea=#5D5D5D;
+    if(mouseX>410 && mouseX<430 && mouseY>550 && mouseY<570)colore_linea=#FF00FB;
+    if(mouseX>410 && mouseX<430 && mouseY>550 && mouseY<570 && colore_linea==#FF00FB && mouseButton==RIGHT)colore_linea=#5D5D5D;
+  }
+  if(scelta==1)
+  {
+    fill(0);
+    textSize(30);
+    text("x",73,218);
+    textSize(20);
+    fill(255);
+    player1='X';
+    player2='O';
+  }
+  else if(scelta==2)
+  {
+    fill(0);
+    textSize(30);
+    text("x",243,218);
+    textSize(20);
+    fill(255);
+    player1='♥';
+    player2='♠';
+  }
+  else if(scelta==3)
+  {
+    fill(0);
+    textSize(30);
+    text("x",411,218);
+    textSize(20);
+    fill(255);
+    player1='☺';
+    player2='☻';
+  }
+  //--------------------------------------------------//
+  if(colore_x==#FF0000)
+  {
+    fill(0);
+    textSize(30);
+    text("x",41,403);
+    textSize(20);
+    fill(255);
+  }
+  else if(colore_x==#0023FA)
+  {
+    fill(0);
+    textSize(30);
+    text("x",211,403);
+    textSize(20);
+    fill(255);
+  }
+  else if(colore_x==#14FF00)
+  {
+    fill(0);
+    textSize(30);
+    text("x",376,403);
+    textSize(20);
+    fill(255);
+  }
+  //--------------------------------------------------//
+  if(colore_o==#FF0000)
+  {
+    fill(0);
+    textSize(30);
+    text("x",106,403);
+    textSize(20);
+    fill(255);
+  }
+  else if(colore_o==#0023FA)
+  {
+    fill(0);
+    textSize(30);
+    text("x",276,403);
+    textSize(20);
+    fill(255);
+  }
+  else if(colore_o==#14FF00)
+  {
+    fill(0);
+    textSize(30);
+    text("x",441,403);
+    textSize(20);
+    fill(255);
+  }
+  //----------------------------------------------------//
+  if(colore_linea==#03E8FF)
+  {
+    fill(0);
+    textSize(30);
+    text("x",73,568);
+    textSize(20);
+    fill(255);
+  }
+  else if(colore_linea==#FEFF00)
+  {
+    fill(0);
+    textSize(30);
+    text("x",243,568);
+    textSize(20);
+    fill(255);
+  }
+  else if(colore_linea==#FF00FB)
+  {
+    fill(0);
+    textSize(30);
+    text("x",411,568);
+    textSize(20);
+    fill(255);
+  }
+}
+boolean vs_pc;
+boolean turno;
+byte par=0;
+void player_vs_player()
+{
+  if(vs_pc==false && turno==false && vinto==false)
+  {
+    fill(colore_x);
+    if(mouseX>35 && mouseX<155 && mouseY>55 && mouseY<190 && unoai==false && uno==false && mousePressed==true){text(player1,70,155);uno=true;turno=true;par+=1;}            //1
+    if(mouseX>175 && mouseX<325 && mouseY>55 && mouseY<190 && dueai==false && due==false && mousePressed==true){text(player1,222,155);due=true;turno=true;par+=1;}          //2
+    if(mouseX>345 && mouseX<465 && mouseY>55 && mouseY<190 && treai==false && tre==false && mousePressed==true){text(player1,374,155);tre=true;turno=true;par+=1;}          //3
+    if(mouseX>35 && mouseX<155 && mouseY>210 && mouseY<340 && quattroai==false && quattro==false && mousePressed==true){text(player1,70,310);quattro=true;turno=true;par+=1;}   //4
+    if(mouseX>175 && mouseX<325 && mouseY>210 && mouseY<340 && cinqueai==false && cinque==false && mousePressed==true){text(player1,222,310);cinque=true;turno=true;par+=1;}   //5
+    if(mouseX>345 && mouseX<465 && mouseY>210 && mouseY<340 && seiai==false && sei==false && mousePressed==true){text(player1,374,310);sei=true;turno=true;par+=1;}         //6
+    if(mouseX>35 && mouseX<155 && mouseY>360 && mouseY<495 && setteai==false && sette==false &&  mousePressed==true){text(player1,70,460);sette=true;turno=true;par+=1;}       //7
+    if(mouseX>175 && mouseX<325 && mouseY>360 && mouseY<495 && ottoai==false && otto==false && mousePressed==true){text(player1,222,460);otto=true;turno=true;par+=1;}       //8
+    if(mouseX>345 && mouseX<455 && mouseY>360 && mouseY<495 && noveai==false && nove==false && mousePressed==true){text(player1,374,460);nove=true;turno=true;par+=1;}       //9
+  }
+  else if(vs_pc==false && turno==true && vinto==false)
+  {
+    fill(colore_o);
+    if(mouseX>35 && mouseX<155 && mouseY>55 && mouseY<190 && uno==false && unoai==false && mousePressed==true){text(player2,70,155);unoai=true;turno=false;par+=1;}            //1
+    if(mouseX>175 && mouseX<325 && mouseY>55 && mouseY<190 && due==false && dueai==false && mousePressed==true){text(player2,222,155);dueai=true;turno=false;par+=1;}          //2
+    if(mouseX>345 && mouseX<465 && mouseY>55 && mouseY<190 && tre==false && treai==false && mousePressed==true){text(player2,374,155);treai=true;turno=false;par+=1;}          //3
+    if(mouseX>35 && mouseX<155 && mouseY>210 && mouseY<340 && quattro==false && quattroai==false && mousePressed==true){text(player2,70,310);quattroai=true;turno=false;par+=1;}   //4
+    if(mouseX>175 && mouseX<325 && mouseY>210 && mouseY<340 && cinque==false && cinqueai==false && mousePressed==true){text(player2,222,310);cinqueai=true;turno=false;par+=1;}   //5
+    if(mouseX>345 && mouseX<465 && mouseY>210 && mouseY<340 && sei==false && seiai==false && mousePressed==true){text(player2,374,310);seiai=true;turno=false;par+=1;}         //6
+    if(mouseX>35 && mouseX<155 && mouseY>360 && mouseY<495 && sette==false && setteai==false && mousePressed==true){text(player2,70,460);setteai=true;turno=false;par+=1;}       //7
+    if(mouseX>175 && mouseX<325 && mouseY>360 && mouseY<495 && otto==false && ottoai==false && mousePressed==true){text(player2,222,460);ottoai=true;turno=false;par+=1;}       //8
+    if(mouseX>345 && mouseX<455 && mouseY>360 && mouseY<495 && nove==false && noveai==false && mousePressed==true){text(player2,374,460);noveai=true;turno=false;par+=1;}       //9
+  }
+  if(vs_pc==false)
+  {
+    // Vincità Player1 ↓
+    if(uno==true && due==true && tre==true && unoai==false && dueai==false && treai==false){P1_win();linea(123);}
+    if(quattro==true && cinque==true && sei==true && quattroai==false && cinqueai==false && seiai==false){P1_win();linea(456);}
+    if(sette==true && otto==true && nove==true && setteai==false && ottoai==false && noveai==false){P1_win();linea(789);}
+    if(uno==true && quattro==true && sette==true && unoai==false && quattroai==false && setteai==false){P1_win();linea(147);}
+    if(due==true && cinque==true && otto==true && dueai==false && cinqueai==false && ottoai==false){P1_win();linea(258);}
+    if(tre==true && sei==true && nove==true && treai==false && seiai==false && noveai==false){P1_win();linea(369);}
+    if(uno==true && cinque==true && nove==true && unoai==false && cinqueai==false && noveai==false){P1_win();linea(159);}
+    if(tre==true && cinque==true && sette==true && treai==false && cinqueai==false && setteai==false){P1_win();linea(357);}
+    // Vincità Player2 ↓
+    if(unoai==true && dueai==true && treai==true && uno==false && due==false && tre==false){P2_win();linea(123);}
+    if(quattroai==true && cinqueai==true && seiai==true && quattro==false && cinque==false && sei==false){P2_win();linea(456);}
+    if(setteai==true && ottoai==true && noveai==true && sette==false && otto==false && nove==false){P2_win();linea(789);}
+    if(unoai==true && quattroai==true && setteai==true && uno==false && quattro==false && sette==false){P2_win();linea(147);}
+    if(dueai==true && cinqueai==true && ottoai==true && due==false && cinque==false && otto==false){P2_win();linea(258);}
+    if(treai==true && seiai==true && noveai==true && tre==false && sei==false && nove==false){P2_win();linea(369);}
+    if(unoai==true && cinqueai==true && noveai==true && uno==false && cinque==false && nove==false){P2_win();linea(159);}
+    if(treai==true && cinqueai==true && setteai==true && tre==false && cinque==false && sette==false){P2_win();linea(357);}
+    // Pareggio Player 1/2 ↓
+    if(par==9){par=0;pareggio();}
+  }
+}
+void P1_win()
+{
+  HM=true;
+  textSize(30);
+  fill(0,255,0);
+  text("P1 HAI VINTO",280,570);
+  noFill();
+  vinto=true;
+  par=0;
+}
+void P2_win()
+{
+  AI=true;
+  textSize(30);
+  fill(255,0,0);
+  text("P2 HAI VINTO",280,570);
+  noFill();
+  vinto=true;
+  par=0;
+}
+PImage logo_titolo;
+PImage menu;
+PFont font;
+PFont def;
+int i;
+void menu()
+{
+  logo_titolo=loadImage("logo_titolo.png");
+  menu=loadImage("menu.png");
+  font=loadFont("SegoeScript-Bold-48.vlw");
+  //def=loadFont("LucidaSans-48.vlw");
+  background(255);
+  image(logo_titolo,75,70);
+  image(menu,44,150,402,400);
+  textSize(20);
+  //rect(95,198,105,95); //1
+  //rect(301,190,115,100); //3
+  //rect(65,405,130,100); //7
+  //textFont(font,20);
+  fill(0);
+  text("Created By Rega Alessandro",112,592);
+  noFill();
+  //textFont(def);
+}
+void esc()
+{
+  uno=false; 
+  due=false;
+  tre=false;
+  quattro=false;
+  cinque=false;
+  sei=false;
+  sette=false;
+  otto=false;
+  nove=false;
+  unoai=false; 
+  dueai=false;
+  treai=false;
+  quattroai=false;
+  cinqueai=false;
+  seiai=false;
+  setteai=false;
+  ottoai=false;
+  noveai=false;
+  center=false;
+  stop=false;
+  vinto=true;
+  AI=false;
+  HM=false;
+  punteggio=0;
+  punteggioAI=0;
+  play=false;
+  par=0;
+  pers=false;
+  setup();
+}
     </script>
     <canvas id="sketch" style="border: 1px solid black;"></canvas>
     
