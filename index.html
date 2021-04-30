@@ -13,32 +13,18 @@
     <p>Processing Game</p>
     
     <script type="text/processing">
-    PImage logo_titolo;
-    PImage menu;
-    PFont font;
-    PFont def;
-    int i;
-    void menu()
+    void setup()
     {
-      logo_titolo=loadImage("logo_titolo.png");
-      menu=loadImage("menu.png");
-      font=loadFont("SegoeScript-Bold-48.vlw");
-      //def=loadFont("LucidaSans-48.vlw");
+      size(500,600);
+    }
+    void draw()
+    {
       background(255);
-      image(logo_titolo,75,70);
-      image(menu,44,150,402,400);
-      textSize(20);
-      //rect(95,198,105,95); //1
-      //rect(301,190,115,100); //3
-      //rect(65,405,130,100); //7
-      //textFont(font,20);
       fill(0);
-      text("Created By Rega Alessandro",112,592);
-      noFill();
-      //textFont(def);
+      rect(20,20,100,100);
     }
     </script>
-    <canvas id="sketch" style="border: 10px solid black;"></canvas>
+    <canvas id="sketch" style="border: 1px solid black;"></canvas>
     
   </body>
   
