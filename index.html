@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="it" dir="ltr">
+  <head>
+    <!-- Import CSS -->
+    <link rel="stylesheet" href="style.css">
+    <!-- Icona Sito -->
+    <link rel="icon" href="logo-title.jpg" type="image/icon type">
+    <!-- FONT Nome-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rampart+One&display=swap" rel="stylesheet">
+    <!-- FONT Nav -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    <!-- FONT Lavoro -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Allison&display=swap" rel="stylesheet">
+    <!-- FONT Programmi -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Azeret+Mono:wght@200&display=swap" rel="stylesheet">
+
+    <meta charset="utf-8">
+    <title>Alessandro Rega - Portfolio</title>
+  </head>
+  <body>
+    <!-- Parte superiore (Logo - Navigazione) -->
+    <header>
+      <div id="logo">
+        <a href="index.html"><img src="logo-pagina.png"></a>
+      </div>
+      <!-- Menu Telefono -->
+      <div id="tendina">
+        <i class="fas fa-bars"></i>
+        <i class="fas fa-times"></i>
+      </div>
+      <div id="menu-telefono" class="telefono">
+        <span>
+          <a href="#"><li>About</li></a>
+          <a href="#"><li>Contact</li></a>
+        </span>
+      </div>
+      <!-- _____________ -->
+        <nav>
+          <ul>
+            <a href="#"><li>About</li></a>
+            <a href="#"><li>Contact</li></a>
+          </ul>
+        </nav>
+    </header>
+    <section>
+      <div class="contenitore">
+        <div id="nome">
+          <h1>
+            <span>A</span><span>l</span><span>e</span><span>s</span><span>s</span><span>a</span><span>n</span><span>d</span><span>r</span><span>o</span>
+            <br><span>R</span><span>e</span><span>g</span><span>a</span>
+          </h1>
+        </div>
+        <div id="ruolo">
+          &nbsp;Full Stack Web Developer&nbsp
+        </div>
+      </div>
+      <div class="programmi">
+        <div><span><i class="fab fa-html5"></i>&nbsphtml5</span></div>
+        <div><span><i class="fab fa-css3-alt"></i>&nbspcss</span></div>
+        <div><span><i class="fab fa-js-square"></i>&nbspjavascript / jquery</span></div>
+        <div><span><i class="fab fa-php"></i>&nbspphp</span></div>
+        <div><span><i class="fas fa-database"></i>&nbspmysql / sql</span></div>
+        <div><span><i class="fab fa-laravel"></i>&nbsplaravel</span></div>
+        <div><span><i class="fab fa-vuejs"></i>&nbspvuejs</span></div>
+      </div>
+    </section>
+    <footer>
+        <div class="social">
+          <a href="https://www.instagram.com/alerega01/">
+          <span class="tip">Instagram</span>
+          <i class="fab fa-instagram"></i>
+          </a>
+        </div>
+        <div class="social">
+          <a href="https://www.facebook.com/alessandrorega01/">
+          <span class="tip">Facebook</span>
+          <i class="fab fa-facebook-f"></i>
+          </a>
+        </div>
+        <div class="social">
+          <a href="https://www.linkedin.com/in/alessandro-rega-930a69216/">
+          <span class="tip">LinkedIn</span>
+          <i class="fab fa-linkedin-in"></i>
+          </a>
+        </div>
+        <div class="social">
+          <a href="https://github.com/Alk3r2">
+          <span class="tip">GitHub</span>
+          <i class="fab fa-github"></i>
+          </a>
+        </div>
+        <hr>
+    </footer>
+    <script src="https://kit.fontawesome.com/35fd86ea03.js" crossorigin="anonymous"></script>
+    <script>
+    var x = document.getElementById('menu-telefono')
+    var y = document.getElementById('tendina')
+    document.getElementById('tendina').onclick = function() {
+    x.classList.toggle('menu-open');
+    y.classList.toggle('tendina-open');
+    }
+    </script>
+  </body>
+</html>
